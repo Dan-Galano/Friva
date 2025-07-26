@@ -1,0 +1,46 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+frontend/build/
+frontend/dist/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# Coverage reports
+coverage/
+
+# Cloudinary cache (if applicable)
+.cloudinary/
+
+# Socket.io temp files
+*.sock
+
+# Misc
+*.tgz
+debug.log
