@@ -13,7 +13,6 @@ export const useAuthStore = create((set) => ({
   checkAuth: async () => {
     try {
       const response = await api.get("/auth/check");
-
       set({ authUser: response.data });
     } catch (error) {
       set({ authUser: null });
@@ -60,6 +59,24 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       console.log("Error in logout function", error);
       toast.error("Logout failed.");
+    }
+  },
+
+  updateProfile: async (data) => {
+    set({ isUpdatingProfile: true });
+    try {
+      const response = await api.put("/auth/update-profile", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      set({ authUser: response.data });
+      toast.success("Your profile has been updated.");
+    } catch (error) {
+      console.log("Error in updateProfile", error);
+      toast.error("An error occured. Please try again later.");
+    } finally {
+      set({ isUpdatingProfile: false });
     }
   },
 }));
