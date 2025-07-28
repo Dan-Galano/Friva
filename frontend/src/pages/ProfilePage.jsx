@@ -143,16 +143,16 @@ const ProfilePage = () => {
                 />
               </div>
               {isEditing ? (
-                <div className="flex justify-end mt-4">
-                  <div className="space-x-2">
+                <div className="flex justify-center md:justify-end mt-4">
+                  <div className="flex flex-col-reverse md:flex-row md:gap-2">
                     <button
                       onClick={() => {
                         setIsEditing(false);
                         setSelectedImg(null);
-                        setFormData((prev) => ({
-                          ...prev,
+                        setFormData({
+                          fullName: authUser?.fullName || "",
                           profilePic: authUser?.profilePic || "",
-                        }));
+                        });
                       }}
                       type="button"
                       className="btn btn-ghost"
@@ -175,7 +175,7 @@ const ProfilePage = () => {
               )}
             </form>
             {!isEditing && (
-              <div className="flex justify-end">
+              <div className="flex justify-center md:justify-end">
                 <button
                   type="button"
                   onClick={() => setIsEditing(true)}
