@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import User from "../models/user.model.mjs";
 import { generateToken } from "../lib/utils.mjs";
 import cloudinary from "../lib/cloudinary.mjs";
+import streamifier from "streamifier";
 
 export const signup = async (req, res) => {
   const { email, fullName, password } = req.body;
@@ -108,25 +109,47 @@ export const logout = (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { profilePic } = req.body;
+    const { fullName } = req.body;
     const userId = req.user._id;
 
-    if (!profilePic) {
-      return res.status(400).json({ message: "Profile pic is required" });
+    const updateData = {};
+
+    if (fullName && fullName.trim() !== "") {
+      updateData.fullName = fullName;
     }
 
-    const uploadResponse = await cloudinary.uploader.upload(profilePic);
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        profilePic: uploadResponse.secure_url,
-      },
-      { new: true }
-    );
+    if (req.file) {
+      const streamUpload = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            {
+              folder: "profile_pics",
+              format: "webp",
+            },
+            (error, result) => {
+              if(result){
+                resolve(result);
+              } else {
+                reject(error);
+              }
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      }
+
+      const result = await streamUpload();
+      updateData.profilePic = result.secure_url;
+      // updateData.profilePic = profilePic;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+    });
 
     res.status(200).json(updatedUser);
   } catch (error) {
-    console.log("Error in update controller", error.message);
+    console.log("Error in update controller", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
