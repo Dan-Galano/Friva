@@ -1,10 +1,17 @@
 import { toast } from "sonner";
+import { useAuthStore } from "../store/useAuthStore";
 
 const HomePage = () => {
+  const { logout } = useAuthStore();
+
+  const logoutUser = async () => {
+    await logout();
+  } 
+
   return (
     <div>
       This is home <br />
-      <button onClick={() => toast.success("Hello")}>Toast!~</button>
+      <button onClick={logoutUser}>Logout~</button>
       <button className="btn btn-neutral">Neutral</button>
       <button className="btn btn-primary">Primary</button>
       <button className="btn btn-secondary">Secondary</button>
