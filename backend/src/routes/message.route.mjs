@@ -5,10 +5,11 @@ import {
   getMessages,
   sendMessage,
 } from "../controllers/message.controller.mjs";
+import upload from "../middlewares/multer.middleware.mjs";
 
 const router = express.Router();
 
 router.get("/users", protectRoute, getUsersForSidebar);
 router.get("/:id", protectRoute, getMessages);
-router.post("/send/:id", protectRoute, sendMessage);
+router.post("/send/:id", protectRoute, upload.single("image"), sendMessage);
 export default router;
