@@ -1,11 +1,11 @@
 import cloudinary from "../lib/cloudinary.mjs";
 import Message from "../models/message.model.mjs";
 import User from "../models/user.model.mjs";
+import streamifier from "streamifier";
 
 export const getUsersForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
-    console.log(loggedInUserId);
 
     const filteredUsers = await User.find({
       _id: { $ne: loggedInUserId }, //ne = not equal
@@ -40,16 +40,36 @@ export const getMessages = async (req, res) => {
 
 export const sendMessage = async (req, res) => {
   try {
-    const { text, image } = req.body;
+    const { text } = req.body;
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
     let imageUrl;
 
-    if (image) {
-      //Upload base64 image to cloudinary
-      const uploadResponse = await cloudinary.uploader.upload(image);
-      imageUrl = uploadResponse.secure_url;
+    if (req.file) {
+      const streamUpload = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            {
+              folder: "chat_images",
+              format: "webp",
+            },
+            (error, result) => {
+              if (result) {
+                resolve(result);
+              } else {
+                reject(error);
+              }
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      };
+
+      if (req.file?.buffer) {
+        const result = await streamUpload();
+        imageUrl = result.secure_url;
+      }
     }
 
     const newMessage = new Message({
