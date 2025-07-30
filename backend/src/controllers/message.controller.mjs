@@ -1,4 +1,5 @@
 import cloudinary from "../lib/cloudinary.mjs";
+import { getReceiverSocketId, io } from "../lib/socket.mjs";
 import Message from "../models/message.model.mjs";
 import User from "../models/user.model.mjs";
 import streamifier from "streamifier";
@@ -81,7 +82,13 @@ export const sendMessage = async (req, res) => {
 
     await newMessage.save();
 
-    // todo: realtime functionality goes here => socket.io
+    // realtime functionality goes here => socket.io
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    // if user is online then send the message, send the event in real-time
+    if (receiverSocketId) {
+      //since io.emit() broadcast it to everyone, use io.to().emit()
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {
