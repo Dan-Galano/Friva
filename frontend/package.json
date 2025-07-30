@@ -17,6 +17,7 @@
     "react-dom": "^19.1.0",
     "react-loading-indicators": "^1.0.1",
     "react-router-dom": "^7.7.1",
+    "socket.io-client": "^4.8.1",
     "sonner": "^2.0.6",
     "tailwindcss": "^4.1.11",
     "three": "^0.178.0",
