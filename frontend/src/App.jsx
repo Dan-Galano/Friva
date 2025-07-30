@@ -14,11 +14,13 @@ import Loading from "./components/Loading";
 import { useThemeStore } from "./store/useThemeStore";
 
 const App = () => {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
   const { theme } = useThemeStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  console.log({ onlineUsers });
 
   if (isCheckingAuth && !authUser) {
     return (
@@ -29,7 +31,10 @@ const App = () => {
   }
 
   return (
-    <div data-theme={theme} className="transition-colors ease-in-out duration-400">
+    <div
+      data-theme={theme}
+      className="transition-colors ease-in-out duration-400"
+    >
       <Toaster />
       <Navbar />
       <Routes>
