@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { toast } from "sonner";
 import { api } from "../lib/axios";
+import { useAuthStore } from "./useAuthStore.js";
 
 export const useChatStore = create((set, get) => ({
   messages: [],
@@ -52,6 +53,27 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  // TODO: Optimize later
+  subscribeToMessages: () => {
+    const { selectedUser } = get();
+    // if there is no selected chat, return.
+    if (!selectedUser) return;
+
+    const socket = useAuthStore.getState().socket;
+
+    socket.on("newMessage", (newMessage) => {
+      const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
+      if (!isMessageSentFromSelectedUser) return;
+
+      // keep all previous messages from history and add new message at the end.
+      set({ messages: [...get().messages, newMessage] });
+    });
+  },
+
+  // when user logs out/close window, etc.
+  unsubscribeFromMessages: () => {
+    const socket = useAuthStore.getState().socket;
+    socket.off("newMessage");
+  },
+
   setSelectedUser: (selectedUser) => set({ selectedUser }),
 }));
