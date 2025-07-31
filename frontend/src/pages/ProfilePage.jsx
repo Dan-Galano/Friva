@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Camera, Mail, Pencil, User } from "lucide-react";
 import { toast } from "sonner";
@@ -7,6 +7,7 @@ import Loading from "../components/Loading";
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
   const [selectedImg, setSelectedImg] = useState(null);
+  const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     fullName: authUser?.fullName || "",
@@ -22,6 +23,10 @@ const ProfilePage = () => {
         return;
       }
       setSelectedImg(file);
+    }
+
+    if (fileInputRef.current){
+      fileInputRef.current.value = "";
     }
   };
 
@@ -100,6 +105,7 @@ const ProfilePage = () => {
                   className="hidden"
                   accept="image/*"
                   onChange={handleImageUpload}
+                  ref={fileInputRef}
                 />
               </label>
             </div>
