@@ -3,7 +3,7 @@ import { api } from "../lib/axios";
 import { toast } from "sonner";
 import { io } from "socket.io-client";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -97,10 +97,11 @@ export const useAuthStore = create((set, get) => ({
       return;
     }
 
-    const socket = io(BASE_URL, {
+    const socket = io(SOCKET_URL, {
       query: {
         userId: authUser._id,
       },
+      transports: ["websocket"],
     });
     socket.connect();
 
