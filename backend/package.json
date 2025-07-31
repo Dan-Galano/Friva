@@ -5,7 +5,8 @@
   "main": "src/index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon src/index.mjs"
+    "start:dev": "nodemon src/index.mjs",
+    "start": "node src/index.mjs"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +23,8 @@
     "mongoose": "^8.16.5",
     "multer": "^2.0.2",
     "socket.io": "^4.8.1",
-    "streamifier": "^0.1.1"
+    "streamifier": "^0.1.1",
+    "tralk": "file:.."
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

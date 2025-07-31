@@ -21,6 +21,7 @@
     "sonner": "^2.0.6",
     "tailwindcss": "^4.1.11",
     "three": "^0.178.0",
+    "tralk": "file:..",
     "validator": "^13.15.15",
     "vanta": "^0.5.24",
     "zustand": "^5.0.6"

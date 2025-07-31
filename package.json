@@ -1,0 +1,22 @@
+{
+  "name": "tralk",
+  "version": "1.0.0",
+  "description": "This is a full-stack web application built with **React (via Vite)** on the frontend and **Node.js/Express** on the backend. It leverages modern libraries and tools to deliver a responsive and real-time experience.",
+  "main": "index.js",
+  "scripts": {
+    "build":"npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start":"npm run start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dan-Galano/TropaTalk.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Dan-Galano/TropaTalk/issues"
+  },
+  "homepage": "https://github.com/Dan-Galano/TropaTalk#readme"
+}
