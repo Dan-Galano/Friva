@@ -32,7 +32,7 @@ const SettingsPage = () => {
                 group flex flex-col items-center gap-1.5 p-2 rounded-lg transition-colors duration-400
                 ${
                   theme === t
-                    ? "bg-base-200"
+                    ? "bg-base-300"
                     : "hover:bg-base-200/80 cursor-pointer"
                 }
               `}
