@@ -10,6 +10,7 @@ const allowedOrigins = [process.env.CLIENT_ORIGIN, "http://localhost:5173"].filt
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT"],
     credentials: true,
   },
 });
